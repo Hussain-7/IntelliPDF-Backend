@@ -13,6 +13,7 @@ def convertPdfToJson(fileLink):
 		logging.info(f"filename: {filename}")
 		with open(filename, 'wb') as f:
 			f.write(response.content)
+    
     # Parse the pdf to pages to text 
 		loader = PyPDFLoader(filename)
 		pageLevelDocs = loader.load()

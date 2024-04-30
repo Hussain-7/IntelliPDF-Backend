@@ -63,4 +63,4 @@ def searchSimilarData(data:dict):
     finalArray=[]
     for result in results:
         finalArray.append(result.page_content)
-    return {'response': finalArray, 'message' : 'similar docs found successfully', 'status' : 200 }   
+    return {'data': finalArray, 'message' : 'similar docs found successfully', 'status' : 200 }   
