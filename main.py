@@ -44,6 +44,7 @@ async def home():
 
 @app.post('/save_file_in_vector_db')
 async def saveFileInVectorDB(fileId,fileUrl):
+    logging.info("saving file in vector db...")
     try:
         page_level_docs = convertPdfToJson(fileUrl);
         PineconeVectorStore.from_documents(page_level_docs, embeddings, index_name='intelli-pdf',namespace=fileId)
@@ -53,13 +54,14 @@ async def saveFileInVectorDB(fileId,fileUrl):
     
 
 
-@app.post('/handle_message_response')
+@app.post('/search_similar_data')
 def searchSimilarData(data:dict):
+    logging.info("searching for similar data...")
     message = data.get('message', '')
     namespace = data.get('namespace', '')
     vectorStore= PineconeVectorStore.from_existing_index(index_name='intelli-pdf',embedding=embeddings,namespace=namespace)
     results=vectorStore.similarity_search(message,2);
-    logging.info(results[0].page_content);
+    logging.info(f'search result: \n{results[0].page_content}');
     finalArray=[]
     for result in results:
         finalArray.append(result.page_content)
