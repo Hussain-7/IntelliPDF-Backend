@@ -15,6 +15,8 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 pinecone_api_key = os.getenv("PINECONE_API_KEY")
 
 
+# For this project I have already configured an index in pinecone with name 'intelli-pdf'
+pinecone_index_name='intelli-pdf'
 pc = Pinecone(api_key=pinecone_api_key)
 index= pc.Index('intelli-pdf');
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
@@ -47,7 +49,7 @@ async def saveFileInVectorDB(fileId,fileUrl):
     logging.info("saving file in vector db...")
     try:
         page_level_docs = convertPdfToJson(fileUrl);
-        PineconeVectorStore.from_documents(page_level_docs, embeddings, index_name='intelli-pdf',namespace=fileId)
+        PineconeVectorStore.from_documents(page_level_docs, embeddings, index_name=pinecone_index_name,namespace=fileId)
         return {'message' : 'File namespace created successfully', 'status' : 200 }
     except:
         return {'message' : 'Error saving file in vector db', 'status' : 500 }
@@ -59,7 +61,7 @@ def searchSimilarData(data:dict):
     logging.info("searching for similar data...")
     message = data.get('message', '')
     namespace = data.get('namespace', '')
-    vectorStore= PineconeVectorStore.from_existing_index(index_name='intelli-pdf',embedding=embeddings,namespace=namespace)
+    vectorStore= PineconeVectorStore.from_existing_index(index_name=pinecone_index_name,embedding=embeddings,namespace=namespace)
     results=vectorStore.similarity_search(message,2);
     logging.info(f'search result: \n{results[0].page_content}');
     finalArray=[]
