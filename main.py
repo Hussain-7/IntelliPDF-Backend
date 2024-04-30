@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import logging
-
+from utils.langchain import convertPdfToJson
 
 app = FastAPI()
 
@@ -25,7 +25,11 @@ async def home():
 
 @app.get('/save_file_in_vector_db')
 async def saveFileInVectorDB():
-    return {'message' : 'File Saved Successfully', 'status' : 200 }
+    file_data=convertPdfToJson('https://utfs.io/f/b59b4a54-3673-432d-8667-043a0694b0e3-6na4fi.pdf');
+    return {'data':file_data, 'message' : 'File Saved Successfully', 'status' : 200 }
+
+
+
 
 @app.post('/handle_message_response')
 async def handleMessageResponse():

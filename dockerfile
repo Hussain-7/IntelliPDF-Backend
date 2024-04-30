@@ -7,12 +7,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && \
     apt-get clean
 
-RUN pip3 install numpy nltk openai async-timeout fastapi python-dotenv hypercorn
+RUN pip3 install numpy openai async-timeout fastapi python-dotenv hypercorn
 
-RUN pip3 install protobuf==3.20.0 grpcio grpcio-tools
-
-RUN pip3 install requests redis
-
+RUN pip3 install requests pypdf langchain_community langchain_text_splitters os
 
 COPY . .
 
