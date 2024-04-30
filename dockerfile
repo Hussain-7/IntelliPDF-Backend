@@ -9,9 +9,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip3 install numpy openai async-timeout fastapi python-dotenv hypercorn
 
-RUN pip3 install requests pypdf langchain_community langchain_text_splitters os
+RUN pip3 install requests pypdf langchain_community langchain_pinecone langchain_text_splitters pinecone-client langchain-openai
+
+RUN pip3 install langchain-pinecone langchain-openai langchain
 
 COPY . .
+
+# Create env file in 
+
+
 
 CMD ["hypercorn", "--bind", "0.0.0.0:4000", "main:app"]
 
