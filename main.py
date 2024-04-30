@@ -53,8 +53,14 @@ async def saveFileInVectorDB(fileId,fileUrl):
     
 
 
-
-
 @app.post('/handle_message_response')
-async def handleMessageResponse():
-    return {'message' : 'Message Response Handled Successfully', 'status' : 200 }   
+def searchSimilarData(data:dict):
+    message = data.get('message', '')
+    namespace = data.get('namespace', '')
+    vectorStore= PineconeVectorStore.from_existing_index(index_name='intelli-pdf',embedding=embeddings,namespace=namespace)
+    results=vectorStore.similarity_search(message,2);
+    logging.info(results[0].page_content);
+    finalArray=[]
+    for result in results:
+        finalArray.append(result.page_content)
+    return {'response': finalArray, 'message' : 'similar docs found successfully', 'status' : 200 }   
