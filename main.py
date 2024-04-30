@@ -37,8 +37,6 @@ app.add_middleware(
 )
 
 
-
-
 @app.get('/')
 async def home():
     return {'message': 'Hello👋 Developers💻'}
